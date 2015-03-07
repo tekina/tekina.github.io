@@ -11,6 +11,7 @@
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   </head>
   <body>
     <div class="wrapper">
@@ -27,8 +28,8 @@
 
       </header>
       <section>
-        <h2>
-<a name="howdy" class="anchor" href="#howdy"><span class="octicon octicon-link"></span></a>Howdy!</h2>
+        <h2 id="howdy">
+<a name="howdy" class="anchor" href="#howdy"><span class="octicon octicon-link"></span></a>Hello!</h2>
 
 <h3>
 <a name="this-site-is-currently-under-development-please-come-back-at-a-later-time" class="anchor" href="#this-site-is-currently-under-development-please-come-back-at-a-later-time"><span class="octicon octicon-link"></span></a>This site is currently under development. Please come back at a later time.</h3>
@@ -41,6 +42,43 @@
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
+
+    <script type="text/javascript">
+      function getText(){
+        console.log('ready');
+        $.ajax({
+          type: "GET",
+          url: "http://api-tekina.herokuapp.com/",
+          crossDomain: true,
+          async: false,
+          xhrFields: {
+              withCredentials: true
+          },
+          success: function(data){
+            console.log('success');
+            var objectStr = JSON.stringify(data);
+            objectStr = objectStr.replace(/"/g,"");
+            console.log(objectStr);
+            $("#howdy").text(objectStr);
+          },
+          error: function(data) {
+            console.log('error!');
+            var objectStr = JSON.stringify(data);
+            console.log(objectStr);
+          }
+        });
+      }
+      function checkJquery() {
+        console.log("checkJquery");
+        if(window.jQuery) {
+          window.setTimeout(getText,3000);
+        }
+        else
+          window.setTimeout(checkJquery, 1000);
+      }
+      
+      checkJquery();
+    </script>
 
   </body>
 </html>
